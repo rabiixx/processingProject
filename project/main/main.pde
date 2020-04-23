@@ -20,56 +20,34 @@ PShape bot;
 
 
 void setup() {
-  
-  println("WIdth: " + width);
 
-<<<<<<< HEAD
-  size(600, 400);
-  background(#2c3e50);
-  
-  srcPoint[0] = int( random(0, width - 10) );
-  srcPoint[1] = int( random(0, height - 10) );
-  destPoint[0] = int( random(0, width - 10) );
-  destPoint[1] = int( random(0, height - 10) );
-=======
     size(1024, 1024);
     background(#2c3e50);
     shapeMode(CENTER);
     smooth(4);
 
-    
     srcPoint[0] = int( random(0, width - 20) );
     srcPoint[1] = int( random(0, height - 20) );
     destPoint[0] = int( random(0, width - 20) );
     destPoint[1] = int( random(0, height - 20) );
 
     bot = loadShape("burger.svg"); 
-
-
-
+    
     println("Src: (" + srcPoint[0] + ", " + srcPoint[1] + ")");
     println("Dest: (" + destPoint[0] + ", " + destPoint[1] + ")");
-    
+  
     player1 = new Player(srcPoint, 60, 60, "snorlax.svg");
-    
-    
->>>>>>> 57a0b4907d80e24fa359902fc2daccb456269637
-
-  println("Src: (" + srcPoint[0] + ", " + srcPoint[1] + ")");
-  println("Dest: (" + destPoint[0] + ", " + destPoint[1] + ")");
   
-  player1 = new Player(srcPoint, 60, 60, "snorlax.svg");
-  
-  // Load a soundfile from the /data folder of the sketch and play it back
-  file = new SoundFile(this, "beep.wav");
-  file.stop();
+    // Load a soundfile from the /data folder of the sketch and play it back
+    file = new SoundFile(this, "beep1.wav");
+    file.stop();
   
 }
 
 void draw() {
     background(#2c3e50);
     
-    shape(bot, 100, 100, 40, 40);
+    shape(bot, destPoint[0], destPoint[1], 40, 40);
     
     /* Source and Destination */     
     stroke(#0fb9b1);
@@ -81,8 +59,6 @@ void draw() {
     ellipse(destPoint[0], destPoint[1], 10, 10);
     
     player1.run();
-
-    //println("Distance: "+ calcCloseness());
 }
 
 void keyPressed() {
@@ -149,7 +125,7 @@ class Player {
     float shapeHeight;
     String shapeURI;        /* Player Shpae URI */
     PShape playerShape;    /* Player Shape */
-    float speed = 4;
+    float speed = 3.5;
     float dx = 0, dy = 0;
 
 
