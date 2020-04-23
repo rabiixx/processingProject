@@ -24,7 +24,7 @@ void setup() {
     size(1024, 1024);
     background(#2c3e50);
     shapeMode(CENTER);
-    smooth(4);
+    //smooth(4);
 
     srcPoint[0] = int( random(0, width - 20) );
     srcPoint[1] = int( random(0, height - 20) );
@@ -82,35 +82,35 @@ float calcCloseness(int[] srcPoint, int[] destPoint) {
       file.loop();
       
     if(distancia>90 && distancia<100){
+      file.amp(ampArr[0]);
+      file.rate(rateArr[0]);
+    } else if(distancia>80 && distancia<90){
       file.amp(ampArr[1]);
       file.rate(rateArr[1]);
-    } else if(distancia>80 && distancia<90){
+    } else if(distancia>70 && distancia<80){
       file.amp(ampArr[2]);
       file.rate(rateArr[2]);
-    } else if(distancia>70 && distancia<80){
+    } else if(distancia>60 && distancia<70){
       file.amp(ampArr[3]);
       file.rate(rateArr[3]);
-    } else if(distancia>60 && distancia<70){
+    } else if(distancia>50 && distancia<60){
       file.amp(ampArr[4]);
       file.rate(rateArr[4]);
-    } else if(distancia>50 && distancia<60){
+    } else if(distancia>40 && distancia<50){
       file.amp(ampArr[5]);
       file.rate(rateArr[5]);
-    } else if(distancia>40 && distancia<50){
+    } else if(distancia>30 && distancia<40){
       file.amp(ampArr[6]);
       file.rate(rateArr[6]);
-    } else if(distancia>30 && distancia<40){
+    } else if(distancia>20 && distancia<30){
       file.amp(ampArr[7]);
       file.rate(rateArr[7]);
-    } else if(distancia>20 && distancia<30){
+    } else if(distancia>10 && distancia<20){
       file.amp(ampArr[8]);
       file.rate(rateArr[8]);
-    } else if(distancia>10 && distancia<20){
+    } else {
       file.amp(ampArr[9]);
       file.rate(rateArr[9]);
-    } else {
-      file.amp(ampArr[10]);
-      file.rate(rateArr[10]);
     }
   }
   
