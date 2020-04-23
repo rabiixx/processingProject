@@ -13,7 +13,7 @@ void setup() {
   background(255);
     
   // Load a soundfile from the /data folder of the sketch and play it back
-  file = new SoundFile(this, "button-27.wav");
+  file = new SoundFile(this, "button-37.wav");
   file.play();
   file.loop();
   file.amp(ampArr[ampLevel]);
