@@ -13,10 +13,15 @@ void setup() {
   background(255);
     
   // Load a soundfile from the /data folder of the sketch and play it back
+<<<<<<< HEAD
   file = new SoundFile(this, "button-37.wav");
+=======
+  file = new SoundFile(this, "beep1.wav");
+>>>>>>> 57a0b4907d80e24fa359902fc2daccb456269637
   file.play();
   file.loop();
   file.amp(ampArr[ampLevel]);
+  file.rate(rateArr[rateLevel]);
 
 }      
 void draw() {
@@ -41,7 +46,7 @@ void keyPressed() {
     println(rateArr[rateLevel]);  
   } else if (keyCode == LEFT) {
     if (rateArr[rateLevel] != 0.0) {
-        file.amp(rateArr[--rateLevel]);
+        file.rate(rateArr[--rateLevel]);
     }  
     println(rateArr[rateLevel]);
   }	
