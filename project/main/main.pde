@@ -5,6 +5,7 @@ Player player1;
 
 int[] srcPoint = new int[2];
 int[] destPoint = new int[2];
+PShape bot;
 
     /* This is only for debuggin reasons */
 //final int seed = 1;
@@ -17,21 +18,32 @@ void setup() {
 
     size(1024, 1024);
     background(#2c3e50);
+    shapeMode(CENTER);
+    smooth(4);
+
     
-    srcPoint[0] = int( random(0, width - 10) );
-    srcPoint[1] = int( random(0, height - 10) );
-    destPoint[0] = int( random(0, width - 10) );
-    destPoint[1] = int( random(0, height - 10) );
+    srcPoint[0] = int( random(0, width - 20) );
+    srcPoint[1] = int( random(0, height - 20) );
+    destPoint[0] = int( random(0, width - 20) );
+    destPoint[1] = int( random(0, height - 20) );
+
+    bot = loadShape("burger.svg"); 
+
+
 
     println("Src: (" + srcPoint[0] + ", " + srcPoint[1] + ")");
     println("Dest: (" + destPoint[0] + ", " + destPoint[1] + ")");
     
-    player1 = new Player(srcPoint, 100, 100, "snorlax.svg");
+    player1 = new Player(srcPoint, 60, 60, "snorlax.svg");
+    
+    
 
 }
 
 void draw() {
-    background(#2c3e50); 
+    background(#2c3e50);
+    
+    shape(bot, 100, 100, 40, 40);
     
     /* Source and Destination */     
     stroke(#0fb9b1);
@@ -96,6 +108,7 @@ class Player {
     void display() {
         playerShape = loadShape(shapeURI);
         shape(playerShape, pos[0], pos[1], shapeWidth, shapeHeight);
+        
     }
 
     void update() {
