@@ -14,7 +14,9 @@ final int displayHeight = 600;
 SoundFile distanceSound;
 SoundFile winSound;
 Game game;
-
+Game [] PartidasJugadas = new Game[15];
+int numeroPartidasJugadas = 0;
+long mediaJuego = 0;
 
 void setup() {
 
@@ -40,10 +42,30 @@ void draw() {
     game.run();
 
     if (game.checkFinished()) {
+        PartidasJugadas[numeroPartidasJugadas] = game;
+        mediaJuego  = (mediaJuego + PartidasJugadas[numeroPartidasJugadas].getGameDuration()) / 1000;
+        numeroPartidasJugadas++;
+        
         game.getGameDuration();
         winSound.play();
         //delay( int(winSound.duration() * 1000) );
         game = new Game();
+    } 
+    if (numeroPartidasJugadas == 1) {
+                
+        for (int i = 0; i < numeroPartidasJugadas; i++){
+          PartidasJugadas[i].getGameDuration();
+          mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration() / 1000);
+          println("Partida numero: " + numeroPartidasJugadas);
+          println("Duracion: " + (PartidasJugadas[i].getGameDuration() / 1000)  + " segundos.");
+          
+        }
+        //La media sale mal
+        //En duracion sale un redondeo y en mediaJuego guarda todo (creo)
+        println("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " segundos.");
+        
+        delay(1000);
+        exit();
     }
 
 }
@@ -64,7 +86,7 @@ class Game {
     final float dftAmp = 0.5;
     final float dftRate = 0.5;
     char gamemode;
-    Date startTime, finishTime;
+    long startTime, finishTime;
 
 
     Player player1, target;
@@ -73,7 +95,8 @@ class Game {
     Game() {
         this.player1 = new Player();
         this.target = new Player();
-        this.startTime = Calendar.getInstance().getTime();
+        //this.startTime = Calendar.getInstance().getTime();
+        this.startTime = System.currentTimeMillis();
         distanceSound.loop();
         distanceSound.amp(0.1);
         distanceSound.rate(0.1);
@@ -140,7 +163,8 @@ class Game {
     boolean checkFinished() {
         
         if ( player1.distanceTo(target.pos) < winDistance ) {
-            finishTime = Calendar.getInstance().getTime();
+            //finishTime = Calendar.getInstance().getTime();
+            finishTime = System.currentTimeMillis();
             distanceSound.stop();
             return true;
         }
@@ -150,25 +174,28 @@ class Game {
 
 
     /* Calcultas difference between two Java Dates */
-    void getGameDuration() {
-
+    long getGameDuration() {
+        long diff = 0;
         try {
 
-            long diff = finishTime.getTime() - startTime.getTime();
-
+            diff = (finishTime - startTime) ;
+            /*
             long diffSeconds = diff / 1000 % 60;
             long diffMinutes = diff / (60 * 1000) % 60;
             long diffHours = diff / (60 * 60 * 1000) % 24;
             long diffDays = diff / (24 * 60 * 60 * 1000);
-
+            
             println(diffDays + " days, ");
             println(diffHours + " hours, ");
             println(diffMinutes + " minutes, ");
             println(diffSeconds + " seconds.");
-
+            */
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return diff;
     }
 }
 
@@ -187,6 +214,7 @@ class Player {
     /* Default Player Constructor */
     Player() {
         super();
+        
         initAtRandomPosition();
         playerShape = loadShape(shapeURI);
         // shape(this.playerShape, this.pos[0], this.pos[1], shapeWidth, shapeHeight);
