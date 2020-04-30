@@ -17,6 +17,8 @@ Game game;
 Game [] PartidasJugadas = new Game[15];
 int numeroPartidasJugadas = 0;
 long mediaJuego = 0;
+String snorlax = "snorlax.svg";
+String burger = "burger.svg";
 
 void setup() {
 
@@ -38,7 +40,8 @@ void setup() {
 void draw() {
 
     background(#2c3e50);
-
+    
+    
     game.run();
 
     if (game.checkFinished()) {
@@ -51,12 +54,15 @@ void draw() {
         //delay( int(winSound.duration() * 1000) );
         game = new Game();
     } 
-    if (numeroPartidasJugadas == 1) {
+    //Cuando se juegan x partidas (en este caso 3) 
+    //Al terminar la tecera partida se crea otra claase y luego termina
+    //SI se soluciona esto dara problemas "numeroPartidasJugadas" al calcular la media
+    if (numeroPartidasJugadas == 3) {
                 
         for (int i = 0; i < numeroPartidasJugadas; i++){
           PartidasJugadas[i].getGameDuration();
           mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration() / 1000);
-          println("Partida numero: " + numeroPartidasJugadas);
+          println("Partida numero: " + (i+1));
           println("Duracion: " + (PartidasJugadas[i].getGameDuration() / 1000)  + " segundos.");
           
         }
@@ -93,8 +99,11 @@ class Game {
 
     /* Default Constrcutor */
     Game() {
-        this.player1 = new Player();
-        this.target = new Player();
+        this.target = new Player(burger);
+        
+        do{
+          this.player1 = new Player(snorlax);
+        } while( sqrt( pow( (target.pos[0] - player1.pos[0]), 2) + pow( (target.pos[1] - player1.pos[1]), 2) ) < 400 ) ;
         //this.startTime = Calendar.getInstance().getTime();
         this.startTime = System.currentTimeMillis();
         distanceSound.loop();
@@ -205,17 +214,20 @@ class Player {
     int[] pos = new int[2];                 /* Player Position */
     float shapeWidth = 60;                  /* Default Shape Widht */
     float shapeHeight = 60;                 /* Default Shape Height */ 
-    String shapeURI = "snorlax.svg";        /* Default Player Shpae URI */
+    //String shapeURI = "snorlax.svg";        /* Default Player Shpae URI */
+    String shapeURI;
     PShape playerShape;                     /* Player Shape */
     float speed = 3.5;                      /* Default Speed */
     float dx = 0, dy = 0; 
 
     
     /* Default Player Constructor */
-    Player() {
+    Player(String shapeURI) {
         super();
+        this. shapeURI = shapeURI;
         
         initAtRandomPosition();
+        
         playerShape = loadShape(shapeURI);
         // shape(this.playerShape, this.pos[0], this.pos[1], shapeWidth, shapeHeight);
     }
