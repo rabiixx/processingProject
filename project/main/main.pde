@@ -61,10 +61,6 @@ void draw() {
           mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration());
           println("Partida numero: " + (i+1));
           println("Duracion: " + (PartidasJugadas[i].getGameDuration() )  + " milisegundos.");
-          //text("Partida numero: " + (i+1)+"\n", 10, 60);
-          
-          //text("Duracion: " + (PartidasJugadas[i].getGameDuration() )  + " milisegundos.\n", 10, 120);
-          
         
         }
         //La media sale mal
@@ -73,12 +69,14 @@ void draw() {
         
         text("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.", 10, 200);
         //text("Pulsa una tecla para cerrar la ventana.", 10, 260);
-        delay(1000);
-        /*
-        while(!mousePressed){
-          
-        }*/
-        exit();
+        //delay(1000);
+        
+        while(true){
+          if (mousePressed){
+             exit();
+          }
+        }
+        
     }
 
 }
