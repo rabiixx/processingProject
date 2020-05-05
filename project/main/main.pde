@@ -16,11 +16,15 @@ SoundFile winSound;
 Game game;
 //Game [] partidasJugadas = new Game[15];
 long [] partidasJugadas = new long[15];
-int numeropartidasJugadas = 0;
+int numPartidasJugadas = 0;
 int numeroPartidas = 15;
-long mediaJuego = 0;
+long tiempoMedioJuego = 0;
+long tiempoMedioModo1 = 0;
+long tiempoMedioModo2 = 0;
+long tiempoMedioModo3 = 0;
 String snorlax = "snorlax.svg";
 String burger = "burger.svg";
+int gamemode = 1;
 
 void setup() {
 
@@ -43,36 +47,48 @@ void draw() {
 
     background(#2c3e50);
     
-    if (game.checkFinished() && numeroPartidas!=numeropartidasJugadas) {
-        partidasJugadas[numeropartidasJugadas] = game.getGameDuration();
-        numeropartidasJugadas++;
+    if (game.checkFinished() && numeroPartidas!=numPartidasJugadas) {
+        partidasJugadas[numPartidasJugadas] = game.getGameDuration();
+        numPartidasJugadas++;
         
         winSound.play();
         //delay( int(winSound.duration() * 1000) );
-        if(numeroPartidas!=numeropartidasJugadas){
+        if(numeroPartidas!=numPartidasJugadas){
           game = new Game();
         } else {
             textSize(20);
-            for (int i = 0; i < numeropartidasJugadas; i++){
-              mediaJuego  = mediaJuego + (partidasJugadas[i]);
+            for (int i = 0; i < numPartidasJugadas; i++){
+              if (i<5){
+                tiempoMedioModo1+=partidasJugadas[i];
+              } else if (i>=5 && i<10){
+                tiempoMedioModo2+=partidasJugadas[i];
+              } else {
+                tiempoMedioModo3+=partidasJugadas[i];
+              }
+              tiempoMedioJuego += (partidasJugadas[i]);
               println("Partida numero: " + (i+1));
               println("Duracion: " + (partidasJugadas[i] )  + " milisegundos.");
-            
             }
-            println("La media de juego entre las " + numeropartidasJugadas + " primeras partidas es de " + (mediaJuego / numeropartidasJugadas) + " milisegundos.");
+            println("La media de juego entre las " + numPartidasJugadas + " primeras partidas es de " + (tiempoMedioJuego / numPartidasJugadas) + " milisegundos.");
         }
         
-    } else if (game.checkFinished() && numeroPartidas==numeropartidasJugadas){
-       text("Haz click con el ratón.", 10, 260);     
-       text("La media de juego entre las " + numeropartidasJugadas + " partidas es de " + (mediaJuego / numeropartidasJugadas) + " milisegundos.", 10, 200); 
+    } else if (game.checkFinished() && numeroPartidas==numPartidasJugadas){
+       text("Tiempo medio del primer modo de juego: "+(tiempoMedioModo1/5)+" milisegundos.", 10, 100);  
+       text("Tiempo medio del segundo modo de juego: "+(tiempoMedioModo2/5)+" milisegundos.", 10, 200);  
+       text("Tiempo medio del tercer modo de juego: "+(tiempoMedioModo3/5)+" milisegundos.", 10, 300);  
+       text("Haz click con el ratón.", 10, 460);     
+       text("La media de juego entre las " + numPartidasJugadas + " partidas es de " + (tiempoMedioJuego / numPartidasJugadas) + " milisegundos.", 10, 400); 
        
     } else {
       game.run();
+      textSize(15);
+      text("Partida "+ (numPartidasJugadas+1), 670, 30);  
+      text("Modo de juego "+ gamemode, 670, 50);  
     }
 
 }
 void mouseReleased(){
-  if (numeroPartidas==numeropartidasJugadas){
+  if (numeroPartidas==numPartidasJugadas){
      exit(); 
   }
  
@@ -92,7 +108,7 @@ class Game {
     final int noiseDistance = 500;      /* Minimum Distance required to rate and amp helps start */
     final float dftAmp = 0.5;
     final float dftRate = 0.5;
-    char gamemode;
+    
     long startTime, finishTime;
 
 
@@ -122,9 +138,9 @@ class Game {
     /* Key Pressed Event Handler */
     void keyPressed() {
 
-        if ( numeropartidasJugadas<5 ) {
+        if ( numPartidasJugadas<5 ) {
             gamemode = 1;
-        } else if (numeropartidasJugadas<5 && numeropartidasJugadas<10) {
+        } else if (numPartidasJugadas>=5 && numPartidasJugadas<10) {
           gamemode = 2;
           
         } else {
@@ -132,9 +148,8 @@ class Game {
         }
         
         player1.pressed( (key == 'a' || key == 'A' || keyCode == LEFT), (key == 'd' || key == 'D' || keyCode == RIGHT),
-                         (key == 'w' || key == 'W' || keyCode == UP), (key == 's' || key == 'S' || keyCode == DOWN));
-                        
-        } 
+                         (key == 'w' || key == 'W' || keyCode == UP), (key == 's' || key == 'S' || keyCode == DOWN));          
+        
     }
 
     /* Key Release Event Handler */
