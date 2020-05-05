@@ -14,9 +14,10 @@ final int displayHeight = 600;
 SoundFile distanceSound;
 SoundFile winSound;
 Game game;
-Game [] partidasJugadas = new Game[15];
+//Game [] partidasJugadas = new Game[15];
+long [] partidasJugadas = new long[15];
 int numeropartidasJugadas = 0;
-int numeroPartidas = 1;
+int numeroPartidas = 15;
 long mediaJuego = 0;
 String snorlax = "snorlax.svg";
 String burger = "burger.svg";
@@ -42,14 +43,10 @@ void draw() {
 
     background(#2c3e50);
     
-    
-    game.run();
-
     if (game.checkFinished() && numeroPartidas!=numeropartidasJugadas) {
-        partidasJugadas[numeropartidasJugadas] = game;
+        partidasJugadas[numeropartidasJugadas] = game.getGameDuration();
         numeropartidasJugadas++;
         
-        game.getGameDuration();
         winSound.play();
         //delay( int(winSound.duration() * 1000) );
         if(numeroPartidas!=numeropartidasJugadas){
@@ -57,21 +54,20 @@ void draw() {
         } else {
             textSize(20);
             for (int i = 0; i < numeropartidasJugadas; i++){
-              partidasJugadas[i].getGameDuration();
-              mediaJuego  = mediaJuego + (partidasJugadas[i].getGameDuration());
+              mediaJuego  = mediaJuego + (partidasJugadas[i]);
               println("Partida numero: " + (i+1));
-              println("Duracion: " + (partidasJugadas[i].getGameDuration() )  + " milisegundos.");
+              println("Duracion: " + (partidasJugadas[i] )  + " milisegundos.");
             
             }
-            //La media sale mal
-            //En duracion sale un redondeo y en mediaJuego guarda todo (creo)
             println("La media de juego entre las " + numeropartidasJugadas + " primeras partidas es de " + (mediaJuego / numeropartidasJugadas) + " milisegundos.");
         }
         
     } else if (game.checkFinished() && numeroPartidas==numeropartidasJugadas){
        text("Haz click con el ratón.", 10, 260);     
        text("La media de juego entre las " + numeropartidasJugadas + " partidas es de " + (mediaJuego / numeropartidasJugadas) + " milisegundos.", 10, 200); 
-      
+       
+    } else {
+      game.run();
     }
 
 }
@@ -105,9 +101,9 @@ class Game {
     /* Default Constrcutor */
     Game() {
         this.target = new Player(burger);
-        
+        this.player1 = new Player(snorlax);
         do{
-          this.player1 = new Player(snorlax);
+          player1.initAtRandomPosition();
         } while( sqrt( pow( (target.pos[0] - player1.pos[0]), 2) + pow( (target.pos[1] - player1.pos[1]), 2) ) < 500 ) ;
         //this.startTime = Calendar.getInstance().getTime();
         this.startTime = System.currentTimeMillis();
@@ -126,12 +122,18 @@ class Game {
     /* Key Pressed Event Handler */
     void keyPressed() {
 
-        if ( (key == '1') || (key == '2') || (key == '3') ) {
-            gamemode = key;
+        if ( numeropartidasJugadas<5 ) {
+            gamemode = 1;
+        } else if (numeropartidasJugadas<5 && numeropartidasJugadas<10) {
+          gamemode = 2;
+          
         } else {
-            player1.pressed( (key == 'a' || key == 'A' || keyCode == LEFT), (key == 'd' || key == 'D' || keyCode == RIGHT),
-                             (key == 'w' || key == 'W' || keyCode == UP), (key == 's' || key == 'S' || keyCode == DOWN));
-                          
+          gamemode = 3;
+        }
+        
+        player1.pressed( (key == 'a' || key == 'A' || keyCode == LEFT), (key == 'd' || key == 'D' || keyCode == RIGHT),
+                         (key == 'w' || key == 'W' || keyCode == UP), (key == 's' || key == 'S' || keyCode == DOWN));
+                        
         } 
     }
 
@@ -193,17 +195,6 @@ class Game {
         try {
 
             diff = (finishTime - startTime) ;
-            /*
-            long diffSeconds = diff / 1000 % 60;
-            long diffMinutes = diff / (60 * 1000) % 60;
-            long diffHours = diff / (60 * 60 * 1000) % 24;
-            long diffDays = diff / (24 * 60 * 60 * 1000);
-            
-            println(diffDays + " days, ");
-            println(diffHours + " hours, ");
-            println(diffMinutes + " minutes, ");
-            println(diffSeconds + " seconds.");
-            */
             
             
         } catch (Exception e) {
@@ -229,8 +220,7 @@ class Player {
     /* Default Player Constructor */
     Player(String shapeURI) {
         super();
-        this. shapeURI = shapeURI;
-        
+        this.shapeURI = shapeURI;
         initAtRandomPosition();
         playerShape = loadShape(shapeURI);
         
