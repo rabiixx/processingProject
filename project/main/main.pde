@@ -16,6 +16,7 @@ SoundFile winSound;
 Game game;
 Game [] PartidasJugadas = new Game[15];
 int numeroPartidasJugadas = 0;
+int numeroPartidas = 1;
 long mediaJuego = 0;
 String snorlax = "snorlax.svg";
 String burger = "burger.svg";
@@ -44,43 +45,42 @@ void draw() {
     
     game.run();
 
-    if (game.checkFinished()) {
+    if (game.checkFinished() && numeroPartidas!=numeroPartidasJugadas) {
         PartidasJugadas[numeroPartidasJugadas] = game;
-        mediaJuego  = (mediaJuego + PartidasJugadas[numeroPartidasJugadas].getGameDuration()) / 1000;
         numeroPartidasJugadas++;
         
         game.getGameDuration();
         winSound.play();
         //delay( int(winSound.duration() * 1000) );
-        game = new Game();
-    } 
-    if (numeroPartidasJugadas == 1) {
-        textSize(20);
-        for (int i = 0; i < numeroPartidasJugadas; i++){
-          PartidasJugadas[i].getGameDuration();
-          mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration());
-          println("Partida numero: " + (i+1));
-          println("Duracion: " + (PartidasJugadas[i].getGameDuration() )  + " milisegundos.");
-        
-        }
-        //La media sale mal
-        //En duracion sale un redondeo y en mediaJuego guarda todo (creo)
-        println("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.");
-        
-        text("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.", 10, 200);
-        //text("Pulsa una tecla para cerrar la ventana.", 10, 260);
-        //delay(1000);
-        
-        while(true){
-          if (mousePressed){
-             exit();
-          }
+        if(numeroPartidas!=numeroPartidasJugadas){
+          game = new Game();
+        } else {
+            textSize(20);
+            for (int i = 0; i < numeroPartidasJugadas; i++){
+              PartidasJugadas[i].getGameDuration();
+              mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration());
+              println("Partida numero: " + (i+1));
+              println("Duracion: " + (PartidasJugadas[i].getGameDuration() )  + " milisegundos.");
+            
+            }
+            //La media sale mal
+            //En duracion sale un redondeo y en mediaJuego guarda todo (creo)
+            println("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.");
         }
         
+    } else if (game.checkFinished() && numeroPartidas==numeroPartidasJugadas){
+       text("Haz click con el ratón.", 10, 260);     
+       text("La media de juego entre las " + numeroPartidasJugadas + " partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.", 10, 200); 
+      
     }
 
 }
-
+void mouseReleased(){
+  if (numeroPartidas==numeroPartidasJugadas){
+     exit(); 
+  }
+ 
+}
 /* Events cant be fired iside classes */ 
 void keyPressed() {
     game.keyPressed();
