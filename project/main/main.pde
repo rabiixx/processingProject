@@ -54,23 +54,30 @@ void draw() {
         //delay( int(winSound.duration() * 1000) );
         game = new Game();
     } 
-    //Cuando se juegan x partidas (en este caso 3) 
-    //Al terminar la tecera partida se crea otra claase y luego termina
-    //SI se soluciona esto dara problemas "numeroPartidasJugadas" al calcular la media
-    if (numeroPartidasJugadas == 3) {
-                
+    if (numeroPartidasJugadas == 1) {
+        textSize(20);
         for (int i = 0; i < numeroPartidasJugadas; i++){
           PartidasJugadas[i].getGameDuration();
-          mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration() / 1000);
+          mediaJuego  = mediaJuego + (PartidasJugadas[i].getGameDuration());
           println("Partida numero: " + (i+1));
-          println("Duracion: " + (PartidasJugadas[i].getGameDuration() / 1000)  + " segundos.");
+          println("Duracion: " + (PartidasJugadas[i].getGameDuration() )  + " milisegundos.");
+          //text("Partida numero: " + (i+1)+"\n", 10, 60);
           
+          //text("Duracion: " + (PartidasJugadas[i].getGameDuration() )  + " milisegundos.\n", 10, 120);
+          
+        
         }
         //La media sale mal
         //En duracion sale un redondeo y en mediaJuego guarda todo (creo)
-        println("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " segundos.");
+        println("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.");
         
+        text("La media de juego entre las " + numeroPartidasJugadas + " primeras partidas es de " + (mediaJuego / numeroPartidasJugadas) + " milisegundos.", 10, 200);
+        //text("Pulsa una tecla para cerrar la ventana.", 10, 260);
         delay(1000);
+        /*
+        while(!mousePressed){
+          
+        }*/
         exit();
     }
 
@@ -103,7 +110,7 @@ class Game {
         
         do{
           this.player1 = new Player(snorlax);
-        } while( sqrt( pow( (target.pos[0] - player1.pos[0]), 2) + pow( (target.pos[1] - player1.pos[1]), 2) ) < 400 ) ;
+        } while( sqrt( pow( (target.pos[0] - player1.pos[0]), 2) + pow( (target.pos[1] - player1.pos[1]), 2) ) < 500 ) ;
         //this.startTime = Calendar.getInstance().getTime();
         this.startTime = System.currentTimeMillis();
         distanceSound.loop();
@@ -227,9 +234,8 @@ class Player {
         this. shapeURI = shapeURI;
         
         initAtRandomPosition();
-        
         playerShape = loadShape(shapeURI);
-        // shape(this.playerShape, this.pos[0], this.pos[1], shapeWidth, shapeHeight);
+        
     }
 
     /* Alternative Player Constructor */
