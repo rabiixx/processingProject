@@ -35,8 +35,8 @@ int rateGamesTime = 0;             /* Rate Duration Time */
 int ampRateGamesTime = 0;          /* Amp & Rate Duration Time */
 
 /* Player Shapes */
-String snorlax = "shapes/snorlax.svg";     /* Player 1 Shape */
-String burger = "shapes/burger.svg";       /* Target Shape */
+String snorlax = "snorlax.svg";     /* Player 1 Shape */
+String burger = "burger.svg";       /* Target Shape */
 
 void setup() {
 
@@ -46,13 +46,13 @@ void setup() {
     //smooth(4);
     //frameRate(30);
 
-    winSound = new SoundFile(this, "sounds/winSound.mp3");
+    winSound = new SoundFile(this, "winSound.mp3");
     winSound.amp(0.3);
     
-    finishSound = new SoundFile(this, "sounds/finish.mp3");
+    finishSound = new SoundFile(this, "finish.mp3");
     finishSound.amp(0.6);
 
-    distanceSound = new SoundFile(this, "sounds/beep1.wav");
+    distanceSound = new SoundFile(this, "beep1.wav");
 
     game = new Game();
   
